@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthBot - Premium AI Health Assistant</title>
+    <!-- Google Fonts Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Local stylesheet -->
+    <link rel="stylesheet" href="/static/style.css">
+    <!-- Marked Markdown Parser -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div>
+                <!-- Brand logo area -->
+                <div class="brand-section">
+                    <div class="brand-logo">
+                        <i data-lucide="activity" style="width: 22px; height: 22px;"></i>
+                    </div>
+                    <div>
+                        <h2 class="brand-name">HealthBot</h2>
+                        <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em;">AI Care Companion</span>
+                    </div>
+                </div>
+
+                <!-- Main sidebar settings and disclaimer -->
+                <div class="sidebar-main">
+                    <!-- Safety Disclaimer -->
+                    <div class="safety-disclaimer">
+                        <div class="disclaimer-header">
+                            <i data-lucide="alert-triangle" style="width: 16px; height: 16px;"></i>
+                            <span>Medical Disclaimer</span>
+                        </div>
+                        <p class="disclaimer-body">
+                            HealthBot is an AI assistant, not a doctor. Advice is strictly educational. Verify medical concerns and prescription details with your primary physician.
+                        </p>
+                    </div>
+
+                    <!-- Emergency warning panel -->
+                    <div class="emergency-banner">
+                        <div class="emergency-header">
+                            <i data-lucide="shield-alert" style="width: 16px; height: 16px;"></i>
+                            <span>EMERGENCY ALERT</span>
+                        </div>
+                        <p class="emergency-text">
+                            For severe chest pain, breathing difficulties, sudden weakness or symptoms indicative of high risk, get emergency support instantly. Do not wait for AI.
+                        </p>
+                        <button class="emergency-btn" id="emergency-btn">
+                            <i data-lucide="phone-call" style="width: 14px; height: 14px;"></i>
+                            Emergency Helplines
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer section -->
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="user-avatar">
+                        <i data-lucide="user" style="width: 16px; height: 16px;"></i>
+                    </div>
+                    <span class="user-name">Guest User</span>
+                </div>
+                <button class="theme-toggle" id="theme-toggle" title="Toggle Light/Dark Theme">
+                    <i id="theme-icon" data-lucide="sun" style="width: 18px; height: 18px;"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="chat-main">
+            <!-- Inline Emergency Warning Alert Banner -->
+            <div class="inline-warning-banner" id="inline-warning" style="display: none;">
+                <p>
+                    <i data-lucide="alert-octagon" style="width: 18px; height: 18px;"></i>
+                    <span id="warning-banner-text">Critical symptom detected! Seek emergency assistance.</span>
+                </p>
+                <button class="inline-warning-close" id="inline-warning-close">
+                    <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+                </button>
+            </div>
+
+            <!-- Messages lists -->
+            <div class="chat-messages" id="chat-messages">
+                <!-- Welcome overlay display -->
+                <div class="welcome-overlay" id="welcome-overlay">
+                    <div class="welcome-title-grp">
+                        <h1>How can I help you today?</h1>
+                        <p>Type a question, or upload a photo to scan for visible symptoms.</p>
+                    </div>
+
+                    <!-- Suggestions cards grid -->
+                    <div class="suggestions-grid">
+                        <div class="suggestion-card" data-query="Can you explain what causes severe migraines and how to relieve headache symptoms?">
+                            <div class="icon-holder">
+                                <i data-lucide="brain" style="width: 18px; height: 18px;"></i>
+                            </div>
+                            <h3>Migraine & Headache Causes</h3>
+                            <p>Understand triggers, relief techniques and potential risk factors.</p>
+                        </div>
+                        <div class="suggestion-card" data-query="Explain concrete diet guidelines for a balanced nutritional plan. What healthy fats and foods should I buy?">
+                            <div class="icon-holder">
+                                <i data-lucide="apple" style="width: 18px; height: 18px;"></i>
+                            </div>
+                            <h3>Balanced Nutrition Guide</h3>
+                            <p>Healthy whole food choices, macros, and hydration advice.</p>
+                        </div>
+                        <div class="suggestion-card" data-query="What are the best evidence-based habits for optimizing sleep quality and beating insomnia?">
+                            <div class="icon-holder">
+                                <i data-lucide="moon" style="width: 18px; height: 18px;"></i>
+                            </div>
+                            <h3>Optimizing Sleep Hygiene</h3>
+                            <p>Proven nighttime routines and bedroom climate conditions.</p>
+                        </div>
+                        <div class="suggestion-card" data-query="Give me a simple 15-minute home workout routine utilizing bodyweight exercises.">
+                            <div class="icon-holder">
+                                <i data-lucide="dumbbell" style="width: 18px; height: 18px;"></i>
+                            </div>
+                            <h3>Quick Home Workout</h3>
+                            <p>Effective bodyweight strength training for aerobic fitness.</p>
+                        </div>
+                        <div class="suggestion-card vision-card" id="vision-suggestion-card">
+                            <div class="icon-holder vision-icon-holder">
+                                <i data-lucide="scan" style="width: 18px; height: 18px;"></i>
+                            </div>
+                            <h3>📷 Visual Body Scan</h3>
+                            <p>Upload a photo of a symptom for AI-powered visual disease detection.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat input pane -->
+            <div class="chat-input-panel">
+                <!-- Image preview strip (shown when image is selected) -->
+                <div class="image-preview-strip" id="image-preview-strip" style="display:none;">
+                    <div class="preview-thumbnail-wrap">
+                        <img id="image-preview-thumb" src="" alt="Selected image" class="preview-thumb" />
+                        <button class="preview-remove-btn" id="preview-remove-btn" title="Remove image">
+                            <i data-lucide="x" style="width: 12px; height: 12px;"></i>
+                        </button>
+                    </div>
+                    <span class="preview-label">📷 Image attached · AI will analyze visible symptoms</span>
+                </div>
+                <!-- User note input when image is attached -->
+                <div class="input-container">
+                    <!-- Hidden file input -->
+                    <input type="file" id="image-file-input" accept="image/*" style="display:none;" />
+                    <!-- Camera upload button -->
+                    <button class="camera-button" id="camera-btn" title="Upload image for visual disease scan">
+                        <i data-lucide="camera" style="width: 18px; height: 18px;"></i>
+                    </button>
+                    <textarea 
+                        class="chat-input-field" 
+                        id="chat-input" 
+                        rows="1" 
+                        placeholder="Type a health query or add a note about your image..."
+                    ></textarea>
+                    <button class="send-button" id="send-btn" title="Send message">
+                        <i data-lucide="send" style="width: 18px; height: 18px;"></i>
+                    </button>
+                </div>
+                <div class="panel-footer-text">
+                    HealthBot is an AI assistant. Consult a primary care physician in case of severe health symptoms.
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Application script entrypoint -->
+    <script src="/static/app.js"></script>
+</body>
+</html>
